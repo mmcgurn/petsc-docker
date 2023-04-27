@@ -21,12 +21,18 @@ RUN git checkout $PETSC_BUILD_COMMIT
 ARG CC=gcc
 ARG CXX=g++
 ARG Index64Bit=0
+ARG CUDA=0
+
+# Install cuda if specified
+RUN if [ "$CUDA" = "1" ] ; then apt-get -y install nvidia-cuda-toolkit; fi
 
 # Setup shared configuration
 ENV PETSC_SETUP_ARGS --with-cc=$CC \
 	--with-cxx=$CXX \
 	--with-fc=gfortran \
 	--with-64-bit-indices=$Index64Bit \
+	--with-cxx-dialect=17 \
+	--with-cuda \
 	--download-mpich \
 	--download-fblaslapack \
 	--download-ctetgen \
@@ -49,7 +55,7 @@ ENV PETSC_SETUP_ARGS --with-cc=$CC \
 	--download-zlib \
 	--download-tetgen
 
-# Configure & Build PETSc Debug Build
+# # Configure & Build PETSc Debug Build
 ENV PETSC_ARCH=arch-ablate-debug
 run ./configure \
 	--with-debugging=1 \
@@ -59,16 +65,16 @@ run ./configure \
   rm -rf /petsc/${PETSC_ARCH} && \
   make SLEPC_DIR=/petsc-install/${PETSC_ARCH} PETSC_DIR=/petsc-install/${PETSC_ARCH} PETSC_ARCH="" check
 
-# Configure & Build PETSc Release Build
-ENV PETSC_ARCH=arch-ablate-opt
-run ./configure \
-	--with-debugging=0 \
-  --prefix=/petsc-install/${PETSC_ARCH} \
-	${PETSC_SETUP_ARGS} && \
-  make PETSC_DIR=/petsc all install && \
-  rm -rf /petsc/${PETSC_ARCH} && \
-  make SLEPC_DIR=/petsc-install/${PETSC_ARCH} PETSC_DIR=/petsc-install/${PETSC_ARCH} PETSC_ARCH="" check
-
-ENV PETSC_DIR=/petsc-install
+# # Configure & Build PETSc Release Build
+# ENV PETSC_ARCH=arch-ablate-opt
+# run ./configure \
+# 	--with-debugging=0 \
+#   --prefix=/petsc-install/${PETSC_ARCH} \
+# 	${PETSC_SETUP_ARGS} && \
+#   make PETSC_DIR=/petsc all install && \
+#   rm -rf /petsc/${PETSC_ARCH} && \
+#   make SLEPC_DIR=/petsc-install/${PETSC_ARCH} PETSC_DIR=/petsc-install/${PETSC_ARCH} PETSC_ARCH="" check
+# 
+# ENV PETSC_DIR=/petsc-install
 
 
