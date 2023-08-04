@@ -20,9 +20,6 @@ ARG CXX=g++
 ARG Index64Bit=0
 ARG CUDA=0
 
-# Install cuda if specified
-RUN if [ "$CUDA" = "1" ] ; then apt-get -y install nvidia-cuda-toolkit; fi
-
 # These are extra flags
 ARG DEBUGFLAGS="-g -O0"
 ARG OPTFLAGS="-g -O"
