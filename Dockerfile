@@ -50,7 +50,8 @@ ENV PETSC_SETUP_ARGS --with-cc=$CC \
 	--download-opencascade \
 	--with-libpng \
 	--download-zlib \
-	--download-tetgen
+	--download-tetgen \
+	--download-cmake
 
 # Configure & Build PETSc Debug Build
 ENV PETSC_ARCH=arch-ablate-debug
