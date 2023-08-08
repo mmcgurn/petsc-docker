@@ -30,7 +30,7 @@ ENV PETSC_SETUP_ARGS --with-cc=$CC \
 	--with-fc=gfortran \
 	--with-64-bit-indices=$Index64Bit \
 	--with-cxx-dialect=17 \
-	--with-cuda \
+	--with-cuda --with-cuda-arch=native\
 	--download-mpich \
 	--download-fblaslapack \
 	--download-ctetgen \
